@@ -46,11 +46,14 @@ public class TempProfile extends avscience.ppc.AvScienceDataObject implements Va
     public void writeAttributes()
     {
         System.out.println("TempProfile:writeAttributes()");
+        if (tempUnits==null) tempUnits="";
+        if (depthUnits==null) depthUnits="";
         try
         {
             put("tempUnits", tempUnits);
             put("depthUnits", depthUnits);
             String profile_data = this.getProfileFromTable(profile);
+            if ( profile_data == null ) profile_data="";
             System.out.println("profile_data: "+profile_data);
             put("profile_data", profile_data);
         }

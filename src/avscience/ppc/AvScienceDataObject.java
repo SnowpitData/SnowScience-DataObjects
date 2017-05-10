@@ -32,6 +32,7 @@ public abstract class AvScienceDataObject extends org.json.JSONObject
         
         public String getProfileFromTable(Hashtable table)
   	{
+            if (table==null) return null;
             System.out.println("getProfileFromTable()");
             Enumeration e = table.keys();
             StringBuffer buffer = new StringBuffer();

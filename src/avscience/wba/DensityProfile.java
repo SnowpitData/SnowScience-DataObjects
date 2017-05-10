@@ -20,11 +20,14 @@ public class DensityProfile extends avscience.ppc.AvScienceDataObject implements
 
     public void writeAttributes()
     {
+        if (densityUnits == null) densityUnits="";
+        if (depthUnits == null) depthUnits="";
         try
         {
             put("densityUnits", densityUnits);
             put("depthUnits", depthUnits);
             String profile_data = this.getProfileFromTable(profile);
+            if ( profile_data == null ) profile_data="";
             put("profile_data", profile_data);
         }
         catch(Exception e)

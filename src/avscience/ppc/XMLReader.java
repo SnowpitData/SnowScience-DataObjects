@@ -36,6 +36,10 @@ public class XMLReader
         System.out.println("Build: "+bld);
         String ser = thepit.getSerial();
     	System.out.println("SERIAL: "+ser);
+        
+        File outfile = new File("/Users/mark/desktop/OutTest.xml");
+        XMLWriter writer = new XMLWriter();
+        writer.writeToXML(pit, outfile);
     }
     
     public PitObs getPit(File file)
@@ -155,7 +159,9 @@ public class XMLReader
     {
     	System.out.println("popPit()");
     	avscience.ppc.User user = new avscience.ppc.User();
+        user.writeAttributes();
     	pit = new PitObs();
+        pit.writeAttributes();
     	
     	Element root = doc.getRootElement();
     	
@@ -214,6 +220,7 @@ public class XMLReader
     		if (name.equals("Location"))
     		{
     			avscience.ppc.Location loc = new avscience.ppc.Location();
+                        loc.writeAttributes();
     			List<Attribute> uatts = el.getAttributes();
     			Iterator<Attribute> uit = uatts.iterator();
     			while ( uit.hasNext() )
@@ -238,6 +245,7 @@ public class XMLReader
     		if (name.equals("Layer"))
     		{
     			avscience.ppc.Layer layer = new avscience.ppc.Layer();
+                        layer.writeAttributes();
     			List<Attribute> uatts = el.getAttributes();
     			Iterator<Attribute> uit = uatts.iterator();
     			while ( uit.hasNext() )
@@ -263,6 +271,7 @@ public class XMLReader
     		if ((name.equals("Shear_Test_Result")) | (name.equals("ShearTestResult")))
     		{
     			avscience.ppc.ShearTestResult result = new avscience.ppc.ShearTestResult();
+                        result.writeAttributes();
     			List<Attribute> uatts = el.getAttributes();
     			Iterator<Attribute> uit = uatts.iterator();
     			while ( uit.hasNext() )
@@ -290,6 +299,7 @@ public class XMLReader
     			if (( tu!=null ) && ( du!=null ))
     			{
     				TempProfile tp = new TempProfile(tu.getValue(), du.getValue());
+                                tp.writeAttributes();
 	    			Attribute prof = el.getAttribute("profile");
 	    			if ( prof!=null)
 	    			{
@@ -325,6 +335,7 @@ public class XMLReader
     			if (( tu!=null ) && ( du!=null ))
     			{
     				DensityProfile tp = new DensityProfile(tu.getValue(), du.getValue());
+                                tp.writeAttributes();
 	    			Attribute prof = el.getAttribute("profile");
 	    			if ( prof!=null)
 	    			{

@@ -31,6 +31,7 @@ public class XMLWriter
     
     public void writeToXML(avscience.ppc.PitObs pit, File f)
   	{
+                Sorter.sortPit(pit);
 		Document doc = getDocumentFromPit(pit);
 		XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 		try

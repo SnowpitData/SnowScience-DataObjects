@@ -54,8 +54,8 @@ public class TempProfile extends avscience.ppc.AvScienceDataObject implements Va
             put("depthUnits", depthUnits);
             String profile_data = this.getProfileFromTable(profile);
             if ( profile_data == null ) profile_data="";
-            System.out.println("profile_data: "+profile_data);
-            put("profile_data", profile_data);
+            System.out.println("profile: "+profile_data);
+            put("profile", profile_data);
         }
         catch(Exception e)
         {
@@ -72,7 +72,7 @@ public class TempProfile extends avscience.ppc.AvScienceDataObject implements Va
         {
             tempUnits = getString("tempUnits");
             depthUnits = getString("depthUnits");
-            this.writeProfileToTable(this, getString("profile_data"));
+            this.writeProfileToTable(this, getString("profile"));
         }
         catch(Exception e)
         {
@@ -143,6 +143,7 @@ public class TempProfile extends avscience.ppc.AvScienceDataObject implements Va
     {
         Vector v = new Vector();
         Integer I;
+        if (profile == null ) return v;
         for(Enumeration e = profile.keys(); e.hasMoreElements(); v.addElement(I))
             I = (Integer)e.nextElement();
 
@@ -157,6 +158,7 @@ public class TempProfile extends avscience.ppc.AvScienceDataObject implements Va
 
     public boolean hasPoints()
     {
+        if ( profile == null ) return false;
         return profile.size() > 0;
     }
 

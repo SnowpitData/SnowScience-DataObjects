@@ -29,7 +29,7 @@ public class XMLReader
     
     public void run()
     {
-        PitObs thepit = getPit(new File("/Users/mark/desktop/MarkTest.xml"));
+        PitObs thepit = getPit(new File("/Users/mark/desktop/ChalfantValley.xml"));
     	String name = thepit.getName();
         System.out.println("PitName: "+name);
         int bld = thepit.getBuild();
@@ -293,13 +293,14 @@ public class XMLReader
     		}
     		if (name.equals("Temperature_Profile"))
     		{
-    			System.out.println("Temperature_Profile");
+    			System.out.println("getting Temperature_Profile");
     			Attribute tu = el.getAttribute("tempUnits");
     			Attribute du = el.getAttribute("depthUnits");
+                        System.out.println("temp units: "+tu.toString());
     			if (( tu!=null ) && ( du!=null ))
     			{
     				TempProfile tp = new TempProfile(tu.getValue(), du.getValue());
-                                tp.writeAttributes();
+                                //tp.writeAttributes();
 	    			Attribute prof = el.getAttribute("profile");
 	    			if ( prof!=null)
 	    			{
@@ -335,7 +336,7 @@ public class XMLReader
     			if (( tu!=null ) && ( du!=null ))
     			{
     				DensityProfile tp = new DensityProfile(tu.getValue(), du.getValue());
-                                tp.writeAttributes();
+                              ///  tp.writeAttributes();
 	    			Attribute prof = el.getAttribute("profile");
 	    			if ( prof!=null)
 	    			{

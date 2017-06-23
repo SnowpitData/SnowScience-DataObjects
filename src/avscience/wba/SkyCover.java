@@ -2,7 +2,7 @@
 
      import java.util.Hashtable;
      
-     public final class SkyCover //implements DataTable 
+     public final class SkyCover implements DataTable 
      {
             private static final SkyCover instance = new SkyCover();
             private String[] codes;

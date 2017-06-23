@@ -1,13 +1,4 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   WindSpeed.java
-
 package avscience.wba;
-
-
-// Referenced classes of package avscience.wba:
-//            DataTable
 
 public final class WindSpeed
     implements DataTable
@@ -50,6 +41,21 @@ public final class WindSpeed
     public String[] getDescriptions()
     {
         return descriptions;
+    }
+    
+    public String getDescription(String code)
+    {
+        code = code.trim();
+        for (int i=0; i<codes.length; i++)
+        {
+            if (codes[i].equals(code)) return descriptions[i];
+        }
+        return "";
+    }
+    
+    public String getCode(int i)
+    {
+        return codes[i];
     }
 
     private static final WindSpeed instance = new WindSpeed();

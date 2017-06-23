@@ -89,7 +89,7 @@ public class XMLWriter
         {
             System.out.println("getDocumentFromPit");
            // Sorter.sortPit(pit);
-            Element e = new Element("PitObs");
+            Element e = new Element("Pit_Observation");
             Iterator<String> en = pit.keys();
   
             while ( en.hasNext())
@@ -141,17 +141,17 @@ public class XMLWriter
                 e.addContent(etest);
             }
             
-            Element rhoPro = new Element("DensityProfile");
+            Element rhoPro = new Element("Density_Profile");
             
             DensityProfile rhop = pit.getDensityProfile();
             rhop.writeAttributes();
-            Attribute rhou = new Attribute("densityUnits", rhop.getDensityUnits());
+            Attribute rhou = new Attribute("rhoUnits", rhop.getDensityUnits());
             rhoPro.setAttribute(rhou);
             Attribute du = new Attribute("depthUnits", rhop.getDepthUnits());
             rhoPro.setAttribute(du);
             try
             {
-                Attribute pdata = new Attribute("profile_data", (String) rhop.get("profile_data"));
+                Attribute pdata = new Attribute("profile", (String) rhop.get("profile"));
                 rhoPro.setAttribute(pdata);
             }
             catch(Exception ee)
@@ -162,7 +162,7 @@ public class XMLWriter
             
             /////////////
             
-            Element tPro = new Element("TempProfile");
+            Element tPro = new Element("Temperature_Profile");
             
             TempProfile tp = pit.getTempProfile();
             tp.writeAttributes();
@@ -172,7 +172,7 @@ public class XMLWriter
             tPro.setAttribute(tdu);
             try
             {
-                Attribute pdata = new Attribute("profile_data", (String) tp.get("profile_data"));
+                Attribute pdata = new Attribute("profile", tp.getString("profile"));
                 tPro.setAttribute(pdata);
             }
             catch(Exception ee)
@@ -189,7 +189,7 @@ public class XMLWriter
 	{
 		System.out.println("getElementFromObject");
 		oo.writeAttributes();
-		Element e = new Element(oo.getClass().getName());
+		Element e = new Element(oo.getClass().getSimpleName());
                 
 		Iterator en = oo.keys();
 		while ( en.hasNext())

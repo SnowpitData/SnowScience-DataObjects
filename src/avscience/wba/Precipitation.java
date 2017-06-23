@@ -77,6 +77,11 @@ import java.util.Hashtable;
         descriptions[12] = "Heavy Rain > 7.5mm/hr";
 	codesDesc.put(codes[12], descriptions[12]);
    }
+   
+   public String getCode(int i)
+   {
+       return codes[i];
+   }
 
   public String[] getCodes()
    {

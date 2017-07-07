@@ -2,7 +2,7 @@
  * @(#)XMLReader.java
  *
  *
- * @author 
+ * @author Mark Kahrl
  * @version 1.00 2009/6/23
  */
  
@@ -29,7 +29,7 @@ public class XMLReader
     
     public void run()
     {
-        PitObs thepit = getPit(new File("/Users/mark/desktop/ChalfantValley.xml"));
+        PitObs thepit = getPit(new File("/Users/mark/desktop/ChinaLake.xml"));
     	String name = thepit.getName();
         System.out.println("PitName: "+name);
         int bld = thepit.getBuild();

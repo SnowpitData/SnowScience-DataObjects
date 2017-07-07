@@ -22,8 +22,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     private String stability = "";
     private String pitNotes = "";
     private String crownObs = "false";
-    private String date="";
-    private String time="";
     private String serial="";
     private String archname="";
     private String heightOfSnowpack="";
@@ -102,8 +100,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             System.out.println("Setting activities");
             JSONArray jsonActs = new JSONArray(activities);
             put("activities", jsonActs);
-            put("date", date);
-            put("time", time);
             put("timestamp", timestamp);
             put("edited", edited);
             put("serial", serial);
@@ -209,8 +205,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             }
             
             dbserial = getString("dbserial");
-            date = getString("date");
-            time = getString("time");
             timestamp = getString("timestamp");
             edited = getString("edited");
             serial = getString("serial");
@@ -275,6 +269,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
         dateString = date.toString();
+        timestamp = System.currentTimeMillis()+"";
         measureFrom = user.getMeasureFrom();
     }
     
@@ -310,35 +305,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     { 
     	super(data);
         popAttributes();
-    }
-    
-    public void setDateString(String date, String time)
-    {
-    	String hr = "12";
-    	String mn = "00";
-    	String yr = "2004";
-    	String mnth = "12";
-    	String day = "1";
-    	if ( time.trim().length() == 3 )
-    	{
-    		hr = time.substring(0, 1);
-    		mn = time.substring(1, 3);
-    	}
-    	if ( time.trim().length() > 3 )
-    	{
-    		hr = time.substring(0, 2);
-    		mn = time.substring(2, 4);
-    	}
-    	
-    	if ( date.trim().length() > 7 )
-    	{
-    		yr = date.substring(0, 4);
-    		mnth = date.substring(4, 6);
-    		day = date.substring(6, 8);
-    	}
-    	
-    	dateString = mnth+"/"+day+"/"+yr+":"+hr+":"+mn;
-    	
     }
     
     public void orderLayers()
@@ -519,19 +485,9 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         return loc;
     }
     
-    public String getTime()
-    {
-    	if (time==null) time="";
-        return time;
-    }
-    
     public String getDate()
     {
-    	if ( date==null )
-    	{
-    		return new Date(getTimestamp()).toString();
-    	}
-        else return date;
+    	return new Date(getTimestamp()).toString();
     }
     
     public void setUser(avscience.ppc.User user)
@@ -611,16 +567,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     public void setAirTemp(String airTemp)
     {
         this.airTemp = airTemp;
-    }
-    
-    public void setTime(String time)
-    {
-        this.time = time;
-    }
-    
-    public void setDate(String date)
-    {
-        this.date = date;
     }
     
     public void setStability(String stability)
@@ -788,49 +734,10 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
 	      	{
                     ts = new Long(timestamp).longValue();
 	      	}
-                    catch(Throwable t){ts=0;}
-	      	}
+                catch(Throwable t){ts=0;}
+	     }
 	}
-      	if ( ts < 1 )
-	{
-		      	boolean udate = true;
-		      	
-		      	String dt = getDate();
-		      	if (dt.trim().length()<8) udate = false;
-		      	String time = getTime();
-		      	if ( udate )
-		      	{
-		      	
-			      	String yr="0";
-			      	String mnth="0";
-			      	String dy="0";
-			      	String hr = "0";
-			      	String min = "0";
-			      	if (!(dt.trim().length()<8)) 
-			      	{
-			      		yr = dt.substring(0, 4);
-			      		mnth = dt.substring(4, 6);
-			      		dy = dt.substring(6, 8);
-			      	}
-			      	
-			      	if ( !(time.trim().length()<4))
-			      	{
-			      		hr = time.substring(0, 2);
-			      		min = time.substring(2, 4);
-			      	}
-			      	
-			      	int y = new Integer(yr).intValue();
-			      	int m = new Integer(mnth).intValue()-1;
-			      	int d = new Integer(dy).intValue();
-			      	int h = new Integer(hr).intValue();
-			      	int mn = new Integer(min).intValue();
-			      	java.util.Calendar cal = java.util.Calendar.getInstance();
-			      	cal.set(y, m, d, h, mn);
-			      	ts = cal.getTimeInMillis();
-			     }
-			     
-			}
-		return ts;
+	return ts;
     }
     
     public void addShearTestResult(avscience.ppc.ShearTestResult res)
@@ -861,9 +768,9 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         Enumeration<ShearTestResult> e = shearTests.elements();
         while ( e.hasMoreElements() )
         {
-                r = e.nextElement();
-        	String s = r.toString();
-        	if ( testString.equals(s) ) return r;
+            r = e.nextElement();
+            String s = r.toString();
+            if ( testString.equals(s) ) return r;
         }
         return null;
     }

@@ -23,7 +23,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     private String pitNotes = "";
     private String crownObs = "false";
     private String serial="";
-    private String archname="";
     private String heightOfSnowpack="";
     public String skiAreaPit="false";
     public String bcPit="false";
@@ -103,7 +102,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("timestamp", timestamp);
             put("edited", edited);
             put("serial", serial);
-            put("archname", archname);
             put("testPit", testPit);
             put("dbserial", dbserial);
             put("iLayerNumber", iLayerNumber);
@@ -208,7 +206,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             timestamp = getString("timestamp");
             edited = getString("edited");
             serial = getString("serial");
-            archname = getString("archname");
             testPit = getString("testPit");
             bld = getString("bld");
             bcPit = getString("bcPit");
@@ -388,11 +385,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         if ( name.length() > 24 ) name = name.substring(0, 24);
         return name;
     }
-    
-    public String getArchName()
-    {
-    	return archname;
-    }
    
     public String getAspect()
     {
@@ -446,11 +438,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     {
     	if ( airTemp==null ) airTemp="";
         return airTemp;
-    }
-    
-    public void setArchName(String archname)
-    {
-    	this.archname=archname;
     }
     
     public String getStability()
@@ -695,7 +682,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             if (l.toString().equals(layerString)) layers.removeElement(l);
         }
     }
-    
     
     public avscience.ppc.Layer getLayer(String layerString)
     {

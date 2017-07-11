@@ -108,12 +108,17 @@ public class XMLWriter
                         }
                         
                     }
+                    
                 }
                 catch(Exception ex)
                 {
                     System.out.println(ex.toString());
                 }
             }
+            
+            String acts = pit.getActivitiesString();
+            Attribute a = new Attribute("activities", acts);
+            e.setAttribute(a);
             
             Location l = pit.getLocation();
             Element eloc =  getElementFromObject(l);

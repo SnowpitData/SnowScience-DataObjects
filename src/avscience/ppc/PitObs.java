@@ -683,6 +683,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         }
     }
     
+    
     public avscience.ppc.Layer getLayer(String layerString)
     {
         Enumeration<Layer> e = layers.elements();
@@ -921,5 +922,10 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     {
         if ( shearTests!=null) return shearTests.elements();
         else return new Vector().elements();
+    }
+    
+    public void addActivity(String act)
+    {
+        activities.add(act);
     }
 }

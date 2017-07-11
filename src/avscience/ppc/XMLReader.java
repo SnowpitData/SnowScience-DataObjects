@@ -175,6 +175,15 @@ public class XMLReader
                 try
                 {
                     System.out.println("Setting pit param: "+a.getName()+" to value: "+s);
+                    if (a.getName().equals("activities")) 
+                    {
+                        String[] actsarr = s.split(";");
+                        for (int i = 0; i<actsarr.length; i++)
+                        {
+                            pit.addActivity(actsarr[i]);
+                        }
+                    }
+                    
                     pit.put(a.getName(),s);
                 }
                 catch(Exception e)
@@ -363,6 +372,8 @@ public class XMLReader
 	    			pit.setDensityProfile(tp);
     			}
     		}
+                
+            
     	    if (pit.getTempProfile()==null) pit.setTempProfile(new TempProfile());
             if (pit.getDensityProfile()==null)pit.setDensityProfile(new DensityProfile());
             if (pit.version.contains("PitPod")) mapSCandPrecip();

@@ -97,8 +97,8 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("user", user.toString());
             
             System.out.println("Setting activities");
-            JSONArray jsonActs = new JSONArray(activities);
-            put("activities", jsonActs);
+            String actString = getActivitiesString();
+            put("activities", actString);
             put("timestamp", timestamp);
             put("edited", edited);
             put("serial", serial);
@@ -190,11 +190,12 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             System.out.println("pop activities");
             try
             {
-                JSONArray jActs = getJSONArray("activities");
-                activities = new Vector<String>(jActs.length());
-                for (int i = 0; i < jActs.length(); i++)
+                String actsString = getString("activities");
+                String[] acts = actsString.split(";");
+                activities = new Vector<String>(acts.length);
+                for (int i = 0; i < acts.length; i++)
                 {
-                    activities.add(jActs.getString(i));
+                    activities.add(acts[i]);
                 }
             }
             catch(Exception ee)

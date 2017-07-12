@@ -39,7 +39,7 @@ public class XMLReader
         
         File outfile = new File("/Users/mark/desktop/OutTest.xml");
         XMLWriter writer = new XMLWriter();
-        writer.writeToXML(pit, outfile);
+        writer.writeToXML(thepit, outfile);
     }
     
     public PitObs getPit(File file)

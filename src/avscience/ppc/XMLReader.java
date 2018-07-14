@@ -29,7 +29,7 @@ public class XMLReader
     
     public void run()
     {
-        PitObs thepit = getPit(new File("/Users/mark/desktop/ChinaLake.xml"));
+        PitObs thepit = getPit(new File("/Users/mark/desktop/Chalfant-old-type.xml"));
     	String name = thepit.getName();
         System.out.println("PitName: "+name);
         int bld = thepit.getBuild();
@@ -158,12 +158,11 @@ public class XMLReader
     void popPit()
     {
     	System.out.println("popPit()");
-    	avscience.ppc.User user = new avscience.ppc.User();
-        user.writeAttributes();
-    	pit = new PitObs();
-        pit.writeAttributes();
+    	avscience.ppc.Preferences prefs = new avscience.ppc.Preferences();
+        prefs.writeAttributes();
     	
     	Element root = doc.getRootElement();
+        pit = PitObs.getEmptyPit();
     	
     	List<Attribute> atts = root.getAttributes();
     	Iterator<Attribute> it = atts.iterator();
@@ -192,6 +191,8 @@ public class XMLReader
                 }
     		
     	}
+        //pit.setName(pit.getLocation().getName());
+       /// pit.setUserhash(pit);
     	pit.popAttributes();
     	List<Element> elements = root.getChildren();
     	Iterator<Element> els = elements.iterator();
@@ -201,7 +202,7 @@ public class XMLReader
     		Element el = els.next();
     		String name = el.getName();
     		System.out.println("Name: "+name);
-    		if (name.equals("User"))
+    		if (name.equals("Prefs"))
     		{
     			
     			List<Attribute> uatts = el.getAttributes();
@@ -214,7 +215,7 @@ public class XMLReader
                                 try
                                 {
                                     System.out.println("Setting "+name+" param: "+a.getName()+" to value: "+s);
-                                    user.put(a.getName(),s);
+                                    prefs.put(a.getName(),s);
                                 }
                                 catch(Exception e)
                                 {
@@ -222,8 +223,8 @@ public class XMLReader
                                 }
     				
     			}
-    			user.popAttributes();
-    			pit.setUser(user);
+    			prefs.popAttributes();
+    			pit.setPrefs(prefs);
     		}
     		/////////
     		if (name.equals("Location"))

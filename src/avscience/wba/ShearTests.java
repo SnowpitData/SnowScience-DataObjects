@@ -60,6 +60,7 @@ public final class ShearTests extends Hashtable
         put("Shovel Shear Test", ShovelShearTest.getInstance());
         put("Stuffblock Test", StuffblockTest.getInstance());
         put("Extended Column Test", ExtendedColumnTest.getInstance());
+        put("Propogation Saw Test", PropogationSawTest.getInstance());
         
         Codes.put(CompressionTest.getInstance().getTypeCode(), CompressionTest.getInstance());
         Codes.put(DeepTapTest.getInstance().getTypeCode(), DeepTapTest.getInstance());
@@ -67,6 +68,7 @@ public final class ShearTests extends Hashtable
         Codes.put(ShovelShearTest.getInstance().getTypeCode(), ShovelShearTest.getInstance());
         Codes.put(StuffblockTest.getInstance().getTypeCode(), StuffblockTest.getInstance());
         Codes.put(ExtendedColumnTest.getInstance().getTypeCode(), ExtendedColumnTest.getInstance());
+        Codes.put(PropogationSawTest.getInstance().getTypeCode(), PropogationSawTest.getInstance());
       
     }
 }

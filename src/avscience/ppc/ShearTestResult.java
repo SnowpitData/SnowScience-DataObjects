@@ -31,6 +31,29 @@ public class ShearTestResult extends avscience.ppc.AvScienceDataObject
         popAttributes();
     }
     
+    public ShearTestResult(String[] atts) ///throws Exception
+    {
+        ///if (atts.length != 18 ) throw new Exception("Attribute set length incorrect");
+        code = atts[0];
+        score = atts[1];
+        quality = atts[2];
+        character = atts[3];
+        fractureCat = atts[4];
+        sdepth = atts[5];
+        depthUnits = atts[6];
+        comments = atts[7];
+        dateString = atts[8];
+        ctScore = atts[9];
+        dtScore = atts[10];
+        ecScore = atts[11];
+        numberOfTaps = atts[12];
+        releaseType = atts[13];
+        lengthOfCut = atts[14];
+        lengthOfColumn = atts[15];
+        s = atts[16];
+        
+    }
+    
     public boolean isNoFail()
     {
     	boolean is = false;

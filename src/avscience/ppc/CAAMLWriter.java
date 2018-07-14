@@ -100,8 +100,8 @@ public class CAAMLWriter
     	Iterator<Element> rit = root.getDescendants(rFilter);
     	Element rhoProfile = rit.next();
     	
-    	Attribute dpthUnits = new Attribute("uomDepthTop", pit.getUser().getDepthUnits());
-	Attribute thkUnits = new Attribute("uomThickness", pit.getUser().getDepthUnits());
+    	Attribute dpthUnits = new Attribute("uomDepthTop", pit.getPrefs().getDepthUnits());
+	Attribute thkUnits = new Attribute("uomThickness", pit.getPrefs().getDepthUnits());
 	Attribute rhoUnits = new Attribute("uomDensity", "kgm-3");
 		
 	rhoProfile.setAttribute(dpthUnits);
@@ -154,7 +154,7 @@ public class CAAMLWriter
     	ElementFilter nameFilter = new ElementFilter("name");
     	Iterator<Element> ni = person.getDescendants(nameFilter);
     	Element name = ni.next();
-    	name.setText(pit.getUser().getFirst()+" "+pit.getUser().getLast());
+    	///name.setText(pit.getPrefs().getFirst()+" "+pit.getUser().getLast());
     }
     
     // set Location Info
@@ -181,7 +181,7 @@ public class CAAMLWriter
     	Iterator<Element> elvitp = velv.getDescendants(elvposFilter);
     	Element elvPos = elvitp.next();
     	
-    	Attribute a = new Attribute("uom", pit.getUser().getElvUnits());
+    	Attribute a = new Attribute("uom", pit.getPrefs().getElvUnits());
     	elvPos.setAttribute(a);
     	
     	ElementFilter posFilter = new ElementFilter("position");
@@ -278,7 +278,7 @@ public class CAAMLWriter
     	e  = result.next();
     	if ( e!=null )
     	{
-    		Attribute a = new Attribute("uom", pit.getUser().getDepthUnits());
+    		Attribute a = new Attribute("uom", pit.getPrefs().getDepthUnits());
     		e.setAttribute(a);
                 String mds = new Integer(getMaxDepth(pit)).toString();
                 System.out.println("MAX DEPTH::: "+mds);
@@ -299,7 +299,7 @@ public class CAAMLWriter
     	e  = result.next();
     	if ( e!=null )
     	{
-            Attribute a = new Attribute("uom", "deg"+pit.getUser().getTempUnits());
+            Attribute a = new Attribute("uom", "deg"+pit.getPrefs().getTempUnits());
             e.setAttribute(a);
             e.setText(pit.getAirTemp());
     	}
@@ -342,7 +342,7 @@ public class CAAMLWriter
     	e  = result.next();
     	if ( e!=null )
     	{
-            Attribute a = new Attribute("uom", pit.getUser().getDepthUnits());
+            Attribute a = new Attribute("uom", pit.getPrefs().getDepthUnits());
             e.setAttribute(a);
             e.setText(pit.getHeightOfSnowpack());
     	}
@@ -359,7 +359,7 @@ public class CAAMLWriter
 		    e  = result.next();
 		    if ( e!=null )
 		    {
-                        Attribute a = new Attribute("uom", pit.getUser().getDepthUnits());
+                        Attribute a = new Attribute("uom", pit.getPrefs().getDepthUnits());
 		    	e.setAttribute(a);
 		    	e.setText(pit.getSurfacePen());
 		    }
@@ -372,7 +372,7 @@ public class CAAMLWriter
 		    e  = result.next();
 		    if ( e!=null )
 		    {
-                        Attribute a = new Attribute("uom", pit.getUser().getDepthUnits());
+                        Attribute a = new Attribute("uom", pit.getPrefs().getDepthUnits());
 		    	e.setAttribute(a);
 		    	e.setText(pit.getSurfacePen());
 		    }
@@ -420,7 +420,7 @@ public class CAAMLWriter
     				Element llayer = new Element("Layer");
     				Element dpth = new Element("depthTop");
     				
-    				Attribute dpthUnits = new Attribute("uom",pit.getUser().getDepthUnits());
+    				Attribute dpthUnits = new Attribute("uom",pit.getPrefs().getDepthUnits());
 				dpth.setAttribute(dpthUnits);
     				dpth.setText(sdpth);
     				
@@ -458,7 +458,7 @@ public class CAAMLWriter
     				Element llayer = new Element("Layer");
     				Element dpth = new Element("depthTop");
     				
-    				Attribute dpthUnits = new Attribute("uom",pit.getUser().getDepthUnits());
+    				Attribute dpthUnits = new Attribute("uom",pit.getPrefs().getDepthUnits());
 				dpth.setAttribute(dpthUnits);
     				dpth.setText(sdpth);
     				
@@ -498,7 +498,7 @@ public class CAAMLWriter
 				Element llayer = new Element("Layer");
 				Element dpth = new Element("depthTop");
 					
-				Attribute dpthUnits = new Attribute("uom",pit.getUser().getDepthUnits());
+				Attribute dpthUnits = new Attribute("uom",pit.getPrefs().getDepthUnits());
 				dpth.setAttribute(dpthUnits);
 				dpth.setText(sdpth);
 					
@@ -526,7 +526,7 @@ public class CAAMLWriter
 			Element llayer = new Element("Layer");
 			Element dpth = new Element("depthTop");
 					
-			Attribute dpthUnits = new Attribute("uom",pit.getUser().getDepthUnits());
+			Attribute dpthUnits = new Attribute("uom",pit.getPrefs().getDepthUnits());
 			dpth.setAttribute(dpthUnits);
 			dpth.setText(sdpth);
 					
@@ -638,14 +638,14 @@ public class CAAMLWriter
 		            top.setText(l.getStartDepth()+"");
 					
                             Attribute dpthUnits = top.getAttribute("uom");
-                            dpthUnits.setValue(pit.getUser().getDepthUnits());
+                            dpthUnits.setValue(pit.getPrefs().getDepthUnits());
 					
                             ElementFilter thkf = new ElementFilter("thickness");
                             Iterator<Element> thki = layer.getDescendants(thkf);
                             Element thicknss = thki.next();
                             thicknss.setText(l.getThickness()+"");
                             dpthUnits = thicknss.getAttribute("uom");
-                            dpthUnits.setValue(pit.getUser().getDepthUnits());
+                            dpthUnits.setValue(pit.getPrefs().getDepthUnits());
 					
                             String gt = l.getGrainType1();
                    

@@ -10,9 +10,6 @@ import org.jdom.output.*;
 public class XMLWriter 
 {
     public XMLWriter(){}
-    
-    
-    
     public String getXMLString(avscience.ppc.AvScienceDataObject obj)
     {
 	Element e = getElementFromObject(obj);
@@ -101,7 +98,7 @@ public class XMLWriter
                     if ( o instanceof String )
                     {
                         String s = o.toString();
-                        if (!((key.equals("loc")) | (key.equals("user")) | (key.equals("tempProfile")) | (key.equals("densityProfile"))))
+                        if (!((key.equals("loc")) | (key.equals("user")) | (key.equals("prefs")) | (key.equals("tempProfile")) | (key.equals("densityProfile"))))
                         {
                             Attribute a = new Attribute(key, s);
                             e.setAttribute(a);
@@ -124,8 +121,8 @@ public class XMLWriter
             Element eloc =  getElementFromObject(l);
             e.addContent(eloc);
             
-            User u = pit.getUser();
-            Element eu = getElementFromObject(u);
+            Preferences prefs = pit.getPrefs();
+            Element eu = getElementFromObject(prefs);
             e.addContent(eu);
             
             Enumeration layers = pit.getLayers();

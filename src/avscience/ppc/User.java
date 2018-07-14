@@ -1,38 +1,39 @@
 package avscience.ppc;
 
+import java.security.MessageDigest;
+
 public class User extends AvScienceDataObject
 {
     public String fractureCat="Shear Quality";
     public String hardnessScaling="linear";
+    
+    private String userName = "";
     private String name = "";
     private String email = "";
     private String last = "";
     private String first = "";
     private String phone = "";
-    private String prof = "false";
     private String affil= "";
-    private String share = "true";
-    private String tempUnits = "C";
-    private String depthUnits = "cm";
-    private String elvUnits = "m";
-    private String rhoUnits = "kg/cubic_m";
-    private String measureFrom = "top";
-    private String longType = "W";
-    private String latType = "N";
     private String state ="MT";
-    private String coordType="Lat/Lon";
+    private String prof = "false";
+    private String share = "true";
+    private String hash = null;
     
-    public User(){super();}
+    private Preferences prefs = new Preferences();
+    public Preferences getPrefernces(){ return prefs; }
+    
+    public User(){}
     
     public User(String data) throws Exception
     {
     	super(data);
         popAttributes();
+        if ( hash == null) hash = generateHash();
      }
     
-    public User(String name, String email, String last, String first, String phone, String prof, String affil, String share)
+    public User(String userName, String name, String email, String last, String first, String phone, String prof, String affil, String share)
     {
-    	this();
+        this.userName = userName;
         this.name = name;
         this.email = email;
         this.last = last;
@@ -41,6 +42,29 @@ public class User extends AvScienceDataObject
         this.prof = prof;
         this.affil = affil;
         this.share = share;
+        hash = generateHash();
+    }
+    
+    private String generateHash()
+    {
+        String s = "|"+last+":~"+first+"!";
+        byte[] bts = s.getBytes();
+        try
+        {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] res = md.digest(bts);
+            return new String(res);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            return s;
+        }
+    }
+    
+    public String getHash()
+    {
+        return hash;
     }
     
     public void writeAttributes()
@@ -56,24 +80,16 @@ public class User extends AvScienceDataObject
                 put("last", last);
                 put("first", first);
                 put("phone", phone);
-                put("tempUnits", tempUnits);
-                put("depthUnits", depthUnits);
-                put("elvUnits", elvUnits);
-                put("rhoUnits", rhoUnits);
-                put("measureFrom", measureFrom);
-                put("latType", latType);
-                put("longType", longType);
                 put("state", state);
-                put("coordType", coordType);
                 put("fractureCat", fractureCat);
                 put("hardnessScaling", hardnessScaling);
-                
+                put("userName", userName);
+                put("hash", hash);
         }
         catch(Exception e)
         {
             System.out.println(e.toString());
         }
-    	
     }
     
     public void popAttributes()
@@ -88,18 +104,11 @@ public class User extends AvScienceDataObject
             last = getString("last");
             first = getString("first");
             phone = getString("phone");
-            tempUnits = getString("tempUnits");
-            depthUnits = getString("depthUnits");
-            elvUnits = getString("elvUnits");
-            rhoUnits = getString("rhoUnits");
-            measureFrom = getString("measureFrom");
-            latType = getString("latType");
-            longType = getString("longType");
             state = getString("state");
-            coordType = getString("coordType");
             fractureCat = getString("fractureCat");
             hardnessScaling = getString("hardnessScaling");
-            
+            userName = getString("userName");
+            hash = getString("hash");
         }
         catch(Exception e)
         {
@@ -107,7 +116,6 @@ public class User extends AvScienceDataObject
         }
      }
      
-    
      public String getState()
      {
      	return state;
@@ -123,7 +131,7 @@ public class User extends AvScienceDataObject
      	fractureCat=cat;
      }
      
-     public boolean getProf()
+    public boolean getProf()
     { 
     	if ( prof==null ) return false;
     	if (prof.equals("true")) return true;
@@ -163,21 +171,20 @@ public class User extends AvScienceDataObject
     
     public String getDepthUnits() 
     { 
-        if ( depthUnits == null ) depthUnits="";
-        return depthUnits; 
+        return prefs.getDepthUnits();
     }
     
-    public String getTempUnits() { return tempUnits; }
+    public String getTempUnits() { return prefs.getTempUnits(); }
     
-    public String getElvUnits() { return elvUnits; }
+    public String getElvUnits() { return prefs.getElvUnits(); }
     
-    public String getRhoUnits() { return rhoUnits; }
+    public String getRhoUnits() { return prefs.getRhoUnits(); }
     
-    public String getMeasureFrom(){ return measureFrom; }
+    public String getMeasureFrom(){ return prefs.getMeasureFrom(); }
    
-    public String getLatType(){ return latType; }
+    public String getLatType(){ return prefs.getLatType(); }
     
-    public String getLongType(){ return longType; }
+    public String getLongType(){ return prefs.getLongType(); }
     
     public void setProf(String prof)
     {
@@ -221,47 +228,60 @@ public class User extends AvScienceDataObject
     
     public void setDepthUnits(String depthUnits)
     {
-        this.depthUnits = depthUnits;
+        prefs.setDepthUnits(depthUnits);
     }
     
     public void setTempUnits(String tempUnits)
     {
-        this.tempUnits = tempUnits;
+        prefs.setTempUnits(tempUnits);
     }
     
     public void setElvUnits(String elvUnits)
     {
-        this.elvUnits = elvUnits;
+        prefs.setElvUnits(elvUnits);
     }
     
     public void setRhoUnits(String rhoUnits)
     {
-        this.rhoUnits = rhoUnits;
+        prefs.setRhoUnits(rhoUnits);
     }
     
     public void setMeasureFrom(String measureFrom)
     {
-        this.measureFrom = measureFrom;
+        prefs.setMeasureFrom(measureFrom);
     }
     
     public void setLatType(String latType)
     {
-        this.latType = latType;
+        prefs.setLatType(latType);
     }
     
     public void setLongType(String longType)
     {
-        this.longType = longType;
+        prefs.setLongType(longType);
     }
     
     public void setCoordType(String ctype)
     {
-        coordType = ctype;
+        prefs.setCoordType(ctype);
     }
     
     public String getCoordType()
     {
-        return coordType;
+        return prefs.getCoordType();
     }
-    
+
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * @param userName the userName to set
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }    

@@ -3,6 +3,7 @@ package avscience.ppc;
 import java.util.Date;
 import avscience.wba.TempProfile;
 import avscience.wba.DensityProfile;
+import java.security.MessageDigest;
 import java.util.*;
 import org.json.JSONArray;
 
@@ -37,17 +38,43 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     private String currentEditLayer = "";
     private String currentEditTest = "";
     private String dateString = "";
-    private String timestamp = "";
-    private avscience.ppc.User user = new avscience.ppc.User();
+    private long timestamp = 0;
+    private avscience.ppc.Preferences prefs = new avscience.ppc.Preferences();
+    private String userHash;
     public String iLayerNumber="";
     public String iDepth="";
     public String testPit="false";
     public String version = "";
-    private String dbserial="";
+    private String system_serial=null;
     private String bld="";
     private java.util.Vector<String> activities = new java.util.Vector<String>();
     private String edited="false";
-    public PitObs() {super();}
+    private String name="mypit";
+    private long db_index;
+    
+    private PitObs(){super();}
+    
+    public static void main(String[] args)
+    {
+        PitObs pit = new PitObs();
+        pit.setName("Ths is a new te");
+        pit.setPitNotes("These are pit notes, blah ");
+        System.out.println("PitObs:: "+ pit.generateHash());
+    }
+    
+    public static PitObs getEmptyPit(String name)
+    {
+        PitObs pit = new PitObs();
+        pit.setName(name);
+        return pit;
+    }
+    
+    public static PitObs getEmptyPit()
+    {
+        PitObs pit = new PitObs();
+        pit.writeAttributes();
+        return pit;
+    }
     
     @Override
     public String toXML()
@@ -77,6 +104,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("airTemp", airTemp);
             put("stability", stability);
             put("pitNotes", pitNotes);
+            put("name", name);
             put("crownObs", crownObs);
             System.out.println("Setting layers");
             JSONArray jsonLayers = new JSONArray(layers);
@@ -94,7 +122,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("currentEditTest", currentEditTest);
             put("dateString", dateString);
             System.out.println("Setting user");
-            put("user", user.toString());
+            put("prefs", prefs.toString());
             
             System.out.println("Setting activities");
             String actString = getActivitiesString();
@@ -103,7 +131,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("edited", edited);
             put("serial", serial);
             put("testPit", testPit);
-            put("dbserial", dbserial);
+            put("system_serial", getSystem_serial());
             put("iLayerNumber", iLayerNumber);
             put("iDepth", iDepth);
             put("version", version);
@@ -113,6 +141,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("aviPit", aviPit);
             put("aviLoc", aviLoc);
             put("heightOfSnowpack", heightOfSnowpack);
+            put("userHash", userHash);
         }
         catch(Exception e)
         {
@@ -186,7 +215,7 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             currentEditTest = getString("currentEditTest");
             dateString = getString("dateString");
             System.out.println("pop user");
-            user = new User(getString("user"));
+            prefs = new Preferences(getString("prefs"));
             System.out.println("pop activities");
             try
             {
@@ -203,8 +232,12 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
                 System.out.println(ee.toString());
             }
             
-            dbserial = getString("dbserial");
-            timestamp = getString("timestamp");
+            try
+            {
+                setSystem_serial(getString("system_serial"));
+            }
+            catch(Exception e){System.out.println("system serial not set.");}
+            timestamp = getLong("timestamp");
             edited = getString("edited");
             serial = getString("serial");
             testPit = getString("testPit");
@@ -217,12 +250,24 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             iDepth = getString("iDepth");
             version = getString("version");
             heightOfSnowpack = getString("heightOfSnowpack");
+            name = getString("name");
+            userHash = getString("UserHash");
         }
         catch(Exception e)
         {
             System.out.println("PitObs:popAtts: "+e.toString());
         }
     	
+    }
+    
+    public String getUserHash()
+    {
+        return userHash;
+    }
+    
+    public void setUserhash(User u)
+    {
+        userHash = u.getHash();
     }
     
     public Layer getPILayer()
@@ -258,34 +303,83 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     	}
     }
     
-    public PitObs(avscience.ppc.User user, String serial, int bld, String version)
+    public PitObs(avscience.ppc.User user, int bld, String version, String name)
     {
-        this.user = user;
-        this.serial = serial;
+        this();
+        this.name = name;
+        prefs = user.getPrefernces();
         this.version=version;
         this.bld=bld+"";
         Date date = new Date();
         date.setTime(System.currentTimeMillis());
         dateString = date.toString();
-        timestamp = System.currentTimeMillis()+"";
+        timestamp = System.currentTimeMillis();
         measureFrom = user.getMeasureFrom();
+        userHash = user.getHash();
+        serial = generateHash();
+        writeAttributes();
     }
     
-    public String getSerial()
+    private String generateHash()
     {
-    	if (serial==null) serial = "";
-    	return serial.trim();
+        String s = toString();
+        byte[] bts = s.getBytes();
+        try
+        {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] res = md.digest(bts);
+            long sum = 0;
+            long sum1 = 0;
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i<res.length; i++)
+            {
+                int ii = (int)res[i];
+                
+                if ( (ii % 2) > 0)
+                    sum += Math.abs(ii);
+                else sum1+=Math.abs(ii);
+            }
+           return (sum+"-"+sum1);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            return s;
+        }
     }
     
+    public String getName()
+    {
+        return name;
+    }
+    
+    public String getSerial() /// local serial
+    {
+        return serial;
+    }
+    
+    public String getSystemSerial()
+    {
+    	return getSystem_serial();
+    }
+    
+    public void setSystemSerial(String s)
+    {
+        setSystem_serial(s);
+    }
+   
     public boolean getShare()
     {
-    	return getUser().getShare();
+    	String s = getPrefs().getShare()+"";
+        s = s.trim();
+        if ( s.equals("true")) return true;
+        else return false;
     }
     
     public void setShare(boolean share)
     {
-    	if (share) getUser().setShare("true");
-    	else getUser().setShare("false");
+    	if (share) getPrefs().setShare("true");
+    	else getPrefs().setShare("false");
     }
     
     public avscience.ppc.Layer getLayerByString(String s)
@@ -332,7 +426,17 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     	return heightOfSnowpack;
     }
     
-    public String getName()
+    public Preferences getPrefs()
+    {
+        return prefs;
+    }
+    
+    public void setPrefs(Preferences prefs)
+    {
+        this.prefs = prefs;
+    }
+    
+    public String generateName()
     {
     	System.out.println("getName()");
     	String ds="";
@@ -363,30 +467,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
         return name;
     }
     
-     public void setDBSerial(long ls)
-    {
-        dbserial = ls+"";
-    }
-    
-    public long getDBSerial()
-    {
-        if (dbserial==null)return -1;
-        if (dbserial.trim().length()<1) return -1;
-        return new Long(dbserial).longValue();
-    }
-    
-    public String getDBName()
-    {
-        if (dateString==null) dateString = " ";
-        String name = null;
-        if ( loc!=null ) name = loc.getName().trim();
-        else name = "";
-        name = name + " " + dateString;
-        name = name.trim();
-        if ( name.length() > 24 ) name = name.substring(0, 24);
-        return name;
-    }
-   
     public String getAspect()
     {
     	if ( aspect==null ) aspect ="";
@@ -476,17 +556,6 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     public String getDate()
     {
     	return new Date(getTimestamp()).toString();
-    }
-    
-    public void setUser(avscience.ppc.User user)
-    {
-    	this.user=user;
-    }
-    
-    public User getUser()
-    {
-    	if (user==null)user=new User();
-    	return user;
     }
     
     public boolean getCrownObs()
@@ -703,29 +772,12 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     
     public void setTimestamp(long time)
     {
-    	System.out.println("setTimestamp()");
-    	this.timestamp = time+"";
-    	System.out.println("timestamp: "+timestamp);
+    	this.timestamp = time;
     }
     
     public long getTimestamp()
     {
-    	System.out.println("getTimestamp():");
-    	if (timestamp==null) return 0;
-    	long ts=0;
-    	if ( timestamp == null ) timestamp = "";
-    	else
-    	{
-            if ( timestamp.length()>0 ) 
-	     {
-                try
-	      	{
-                    ts = new Long(timestamp).longValue();
-	      	}
-                catch(Throwable t){ts=0;}
-	     }
-	}
-	return ts;
+    	return timestamp;
     }
     
     public void addShearTestResult(avscience.ppc.ShearTestResult res)
@@ -928,5 +980,40 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     public void addActivity(String act)
     {
         activities.add(act);
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the db_index
+     */
+    public long getDb_index() {
+        return db_index;
+    }
+
+    /**
+     * @param db_index the db_index to set
+     */
+    public void setDb_index(long db_index) {
+        this.db_index = db_index;
+    }
+
+    /**
+     * @return the system_serial
+     */
+    public String getSystem_serial() {
+        return system_serial;
+    }
+
+    /**
+     * @param system_serial the system_serial to set
+     */
+    public void setSystem_serial(String system_serial) {
+        this.system_serial = system_serial;
     }
 }

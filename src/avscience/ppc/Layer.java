@@ -551,6 +551,11 @@ public class Layer extends avscience.ppc.AvScienceDataObject
     {
         grainType1 = type;
     }
+    
+    public void setWaterContent(String wc)
+    {
+        waterContent = wc;
+    }
     ////////////////////////////////////
     /// to support CAAML in mm
     ////////////////////////////////////////

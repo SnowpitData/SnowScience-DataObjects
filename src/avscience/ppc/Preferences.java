@@ -63,20 +63,55 @@ public class Preferences extends AvScienceDataObject
         try
         {
             prof = getString("prof");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             share = getString("share");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             tempUnits = getString("tempUnits");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             depthUnits = getString("depthUnits");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             elvUnits = getString("elvUnits");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             rhoUnits = getString("rhoUnits");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             measureFrom = getString("measureFrom");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             longType = getString("longType");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             latType = getString("latType");
+        }
+        catch(Exception e) {System.out.println(e.toString());}
+        try
+        {
             coordType = getString("coordType");
         }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-        }
+        catch(Exception e) {System.out.println(e.toString());}
+        
+        
     }
     
     /**

@@ -69,7 +69,7 @@ public class User extends AvScienceDataObject
     
     public void writeAttributes()
     {
-        System.out.println("User:writeAttributes()");
+        //System.out.println("User:writeAttributes()");
         try
         {
                 put("share", share);

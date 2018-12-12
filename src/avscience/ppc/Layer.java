@@ -325,7 +325,7 @@ public class Layer extends avscience.ppc.AvScienceDataObject
     
     public int getEndDepthInt()
     {
-    	System.out.println("end depth: "+endDepth);
+    //	System.out.println("end depth: "+endDepth);
     	if ( endDepth == null ) return 0;
     	if ( endDepth.equals("null")) return 0;
     	try
@@ -704,7 +704,7 @@ public class Layer extends avscience.ppc.AvScienceDataObject
     {
         try
         {
-            System.out.println("getAttributes()");
+           // System.out.println("getAttributes()");
             startDepth = getString("startDepth");
             endDepth = getString("endDepth");
             hardness1 = getString("hardness1");

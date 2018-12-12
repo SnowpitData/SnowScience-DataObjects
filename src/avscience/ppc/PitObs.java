@@ -86,12 +86,12 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
     
     public void writeAttributes()
     {
-        System.out.println("PitObs:WriteAttributes");
+      //  System.out.println("PitObs:WriteAttributes");
         try
         {
-            System.out.println("Setting loc");
+           // System.out.println("Setting loc");
             put("loc", loc.toString());
-            System.out.println("Setting aspect");
+           // System.out.println("Setting aspect");
             put("aspect", aspect);
             put("incline", incline);
             put("precip", precip);
@@ -106,25 +106,25 @@ public class PitObs extends avscience.ppc.AvScienceDataObject
             put("pitNotes", pitNotes);
             put("name", name);
             put("crownObs", crownObs);
-            System.out.println("Setting layers");
+          //  System.out.println("Setting layers");
             JSONArray jsonLayers = new JSONArray(layers);
             put("layers", jsonLayers);
             
-            System.out.println("Setting tests");
+          //  System.out.println("Setting tests");
             JSONArray jsonTests = new JSONArray(shearTests);
             put("shearTests", jsonTests);
-            System.out.println("Setting temp profile");
+           // System.out.println("Setting temp profile");
             put("tempProfile", tempProfile.toString());
-            System.out.println("Setting density profile");
+         //   System.out.println("Setting density profile");
             put("densityProfile", densityProfile.toString());
             put("measureFrom", measureFrom);
             put("currentEditLayer", currentEditLayer);
             put("currentEditTest", currentEditTest);
             put("dateString", dateString);
-            System.out.println("Setting user");
+         //   System.out.println("Setting user");
             put("prefs", prefs.toString());
             
-            System.out.println("Setting activities");
+          //  System.out.println("Setting activities");
             String actString = getActivitiesString();
             put("activities", actString);
             put("timestamp", timestamp);

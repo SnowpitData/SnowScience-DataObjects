@@ -1,5 +1,4 @@
 package avscience.ppc;
-
 import org.json.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -33,7 +32,7 @@ public abstract class AvScienceDataObject extends org.json.JSONObject
         public String getProfileFromTable(Hashtable table)
   	{
             if (table==null) return null;
-            System.out.println("getProfileFromTable()");
+            //System.out.println("getProfileFromTable()");
             Enumeration e = table.keys();
             StringBuffer buffer = new StringBuffer();
             while (e.hasMoreElements())
@@ -53,23 +52,23 @@ public abstract class AvScienceDataObject extends org.json.JSONObject
         
         public void writeProfileToTable(ValueProfile vp, String s)
   	{
-            System.out.println("writeProfileToTable");
+           /// System.out.println("writeProfileToTable");
             if ( s!=null)
 	    {
-                System.out.println("profile: "+s);
+                ///System.out.println("profile: "+s);
 	    	s=s.trim();
                 if (s.length()<1) return;
 	    	String[] points = s.split(";");
-	    	System.out.println("Number of points: "+points.length);
+	    //	System.out.println("Number of points: "+points.length);
 		for ( int i = 0; i<points.length; i++)
 	        {
-                    System.out.println("points[i]: "+points[i]);
+                   // System.out.println("points[i]: "+points[i]);
                     String[] point = points[i].split("_");
                     if (point.length>1)
                     {
                         int depth = new Integer(point[0]).intValue();
-                        System.out.println("Depth: "+depth);
-                        System.out.println("value: "+point[1]);
+                 ///       System.out.println("Depth: "+depth);
+                    ///    System.out.println("value: "+point[1]);
 			vp.addPoint(depth, point[1]);
                     }			
                  }	
